@@ -371,9 +371,45 @@
     }
 
     @media (max-width: 760px) {
+      .header-wrap {
+        padding-top: 16px;
+      }
+
+      .logo-center img {
+        width: 190px;
+        margin-bottom: 12px;
+      }
+
+      .nav-center {
+        padding: 0;
+        margin-bottom: 24px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       .nav-center ul {
-        gap: 24px;
-        flex-wrap: wrap;
+        width: max-content;
+        min-width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 12px 14px;
+        flex-wrap: nowrap;
+      }
+
+      .nav-center a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+
+      .nav-center a::after {
+        display: none;
+      }
+
+      .nav-center a.active {
+        background-color: #fff2ea;
       }
 
       .event-title {
@@ -387,23 +423,101 @@
 
     @media (max-width: 540px) {
       .inner {
-        width: calc(100% - 28px);
+        width: 100%;
         padding: 0;
+      }
+
+      .event-page {
+        padding-bottom: 44px;
+      }
+
+      .event-page > .inner {
+        padding: 0 14px;
+      }
+
+      .event-hero {
+        gap: 18px;
+        padding: 10px 0 34px;
+      }
+
+      .event-title {
+        font-size: 28px;
+        letter-spacing: 0;
+      }
+
+      .event-intro {
+        font-size: 16px;
+        overflow-wrap: break-word;
       }
 
       .event-summary,
       .notice-box,
       .event-cta {
-        padding: 22px;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .summary-title,
+      .event-cta h2 {
+        font-size: 22px;
+      }
+
+      .section-title {
+        font-size: 24px;
+        margin: 38px 0 18px;
+      }
+
+      .event-grid {
+        gap: 16px;
+      }
+
+      .event-card-top,
+      .event-card-body {
+        padding: 20px;
+      }
+
+      .event-card h3 {
+        font-size: 21px;
       }
 
       .event-info li {
         grid-template-columns: 1fr;
         gap: 2px;
+        font-size: 15px;
+      }
+
+      .event-button,
+      .cta-button {
+        width: 100%;
+      }
+
+      .cta-actions {
+        width: 100%;
+      }
+
+      .site-footer {
+        margin-top: 52px;
+      }
+
+      .site-footer .inner {
+        padding: 0 18px;
       }
 
       .footer-links {
         gap: 18px;
+        padding: 22px 0;
+      }
+
+      .footer-links a {
+        font-size: 15px;
+      }
+
+      .footer-bottom {
+        padding: 26px 0 32px;
+      }
+
+      .footer-info {
+        overflow-wrap: break-word;
       }
     }
   </style>
