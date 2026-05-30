@@ -490,9 +490,45 @@
     }
 
     @media (max-width: 760px) {
+      .header-wrap {
+        padding-top: 16px;
+      }
+
+      .logo-center img {
+        width: 190px;
+        margin-bottom: 12px;
+      }
+
+      .nav-center {
+        padding: 0;
+        margin-bottom: 24px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       .nav-center ul {
-        gap: 24px;
-        flex-wrap: wrap;
+        width: max-content;
+        min-width: 100%;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 12px 14px;
+        flex-wrap: nowrap;
+      }
+
+      .nav-center a {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+
+      .nav-center a::after {
+        display: none;
+      }
+
+      .nav-center a.active {
+        background-color: #fff2ea;
       }
 
       .hero-copy,
@@ -509,8 +545,101 @@
 
     @media (max-width: 540px) {
       .inner {
-        width: calc(100% - 28px);
+        width: 100%;
         padding: 0;
+      }
+
+      .review-page {
+        padding-bottom: 46px;
+      }
+
+      .review-page > .inner {
+        padding: 0 14px;
+      }
+
+      .hero {
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .hero-copy,
+      .hero-summary,
+      .review-form-card,
+      .review-list-card {
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+      }
+
+      .hero-copy h1 {
+        font-size: 27px;
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+
+      .hero-copy p,
+      .summary-text,
+      .card-desc,
+      .review-body,
+      .footer-info {
+        word-break: keep-all;
+        overflow-wrap: break-word;
+      }
+
+      .hero-badges {
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .hero-badges span {
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .summary-score {
+        font-size: 44px;
+      }
+
+      .summary-stars {
+        font-size: 20px;
+      }
+
+      .review-layout {
+        gap: 16px;
+      }
+
+      .card-title {
+        font-size: 22px;
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea {
+        border-radius: 12px;
+        padding: 13px 14px;
+        font-size: 16px;
+      }
+
+      .form-textarea {
+        min-height: 120px;
+      }
+
+      .rating-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .rating-row label {
+        width: 100%;
+        padding: 10px 8px;
+        text-align: center;
+        font-size: 13px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        border-radius: 13px;
       }
 
       .list-top,
@@ -527,8 +656,47 @@
         width: 100%;
       }
 
+      .review-feed {
+        gap: 12px;
+      }
+
+      .review-item {
+        padding: 16px;
+        border-radius: 14px;
+      }
+
+      .review-user {
+        font-size: 16px;
+      }
+
+      .review-stars {
+        font-size: 16px;
+      }
+
+      .review-photo {
+        height: 180px;
+        border-radius: 12px;
+      }
+
+      .site-footer {
+        margin-top: 52px;
+      }
+
+      .site-footer .inner {
+        padding: 0 18px;
+      }
+
       .footer-links {
         gap: 18px;
+        padding: 22px 0;
+      }
+
+      .footer-links a {
+        font-size: 15px;
+      }
+
+      .footer-bottom {
+        padding: 26px 0 32px;
       }
     }
   </style>
@@ -764,7 +932,7 @@
         menu: item.menu || "기타",
         rating: Number(item.rating) || 5,
         text: item.content || item.text || "",
-        date: formatDate(item.created_at || item.date),
+        date: formatDate(item.created || item.created_at || item.date),
         photo: item.photo || ""
       };
     }
@@ -827,8 +995,8 @@
 
       const { data, error } = await supabaseClient
         .from("reviews")
-        .select("nickname, menu, rating, content, created_at")
-        .order("created_at", { ascending: false });
+        .select("nickname, menu, rating, content, created")
+        .order("created", { ascending: false });
 
       if (error) {
         console.error("리뷰를 불러오지 못했습니다.", error);
