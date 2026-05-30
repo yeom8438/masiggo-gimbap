@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마시꼬 김밥 메뉴</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #efefef;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 0 0 80px;
+      background-color: white;
+    }
+
+    .inner {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px 56px;
+    }
+
+    .header-wrap {
+      text-align: center;
+      padding: 25px 0 0;
+      background-color: white;
+    }
+
+    .logo-center {
+      display: inline-block;
+    }
+
+    .logo-center img {
+      width: 270px;
+      margin-bottom: 18px;
+    }
+
+    .nav-center {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 44px;
+    }
+
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .nav-center a {
+      position: relative;
+      text-decoration: none;
+      color: #222;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0%;
+      height: 3px;
+      background-color: #e65100;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #e65100;
+    }
+
+    .nav-center a:hover::after,
+    .nav-center a.active::after {
+      width: 100%;
+    }
+
+    .menu-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 26px;
+    }
+
+    .menu-tabs {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 2px solid #8f8f8f;
+      padding-bottom: 14px;
+      margin-bottom: 44px;
+      flex-wrap: wrap;
+    }
+
+    .menu-tabs a {
+      position: relative;
+      color: #565656;
+      text-decoration: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .menu-tabs a + a::before {
+      content: "|";
+      position: absolute;
+      left: -12px;
+      color: #b7b7b7;
+    }
+
+    .menu-tabs a.active {
+      color: #e65100;
+      font-weight: 700;
+    }
+
+    .menu-panel {
+      display: none;
+    }
+
+    .menu-panel.active {
+      display: block;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 40px 34px;
+      align-items: start;
+    }
+
+    .menu-card {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .menu-thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #ececec;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      padding: 10px;
+    }
+
+    .menu-thumb img {
+      width: 84%;
+      height: 84%;
+      object-fit: contain;
+    }
+
+    .menu-thumb.bg-thumb {
+      background-image: url("images/bap-menu-reference.png");
+      background-repeat: no-repeat;
+      background-size: 880px 780px;
+      padding: 0;
+    }
+
+    .bg-kimchi {
+      background-position: -6px -28px;
+    }
+
+    .bg-egg-shrimp {
+      background-position: -283px -26px;
+    }
+
+    .bg-jeyuk-rice {
+      background-position: -552px -28px;
+    }
+
+    .bg-jeyuk-lunch {
+      background-position: -281px -429px;
+    }
+
+    .menu-thumb.empty-thumb {
+      background-color: #fbfbfb;
+    }
+
+    .menu-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .menu-price {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #e65100;
+      font-weight: 700;
+    }
+
+    .menu-desc {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #474747;
+      word-break: keep-all;
+    }
+
+    .menu-coming {
+      padding: 70px 0 30px;
+      text-align: center;
+      color: #777;
+      font-size: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .inner {
+        width: calc(100% - 48px);
+        padding: 0 20px 48px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-center ul {
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 540px) {
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-card {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header-wrap">
+      <a href="마시꼬김밥.html" class="logo-center">
+        <img src="images/마시꼬김밥로고.png" alt="마시꼬 김밥 로고">
+      </a>
+
+      <nav class="nav-center">
+        <div class="inner">
+          <ul>
+            <li><a href="마시꼬김밥.html">홈</a></li>
+            <li><a href="menu.html" class="active">메뉴</a></li>
+            <li><a href="about.html">가게 소개</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트</a></li>
+            <li><a href="review.html">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="inner">
+      <main>
+        <h1 class="menu-title">메뉴</h1>
+
+        <div class="menu-tabs">
+          <a href="#" class="active" data-tab="gimbap">김밥</a>
+          <a href="#" data-tab="rice">밥류</a>
+          <a href="#" data-tab="noodle">면류</a>
+          <a href="#" data-tab="snack">분식</a>
+          <a href="#" data-tab="drink">음료</a>
+          <a href="#" data-tab="coffee">커피</a>
+        </div>
+
+        <section class="menu-panel active" data-panel="gimbap">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/원조김밥.png" alt="원조 김밥">
+              </div>
+              <h2 class="menu-name">원조 김밥</h2>
+              <p class="menu-price">4,000원</p>
+              <p class="menu-desc"># 재료 본연의 맛을 가장 깔끔하게 담아낸 클래식 김밥</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/당근김밥.png" alt="당근 김밥">
+              </div>
+              <h2 class="menu-name">당근 김밥</h2>
+              <p class="menu-price">5,000원</p>
+              <p class="menu-desc"># 달큼 아삭한 당근이 가득 부담 없이 즐기는 건강 김밥</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/매운어묵김밥.png" alt="매운 어묵 김밥">
+              </div>
+              <h2 class="menu-name">매운 어묵 김밥</h2>
+              <p class="menu-price">5,000원</p>
+              <p class="menu-desc"># 매운양념 어묵을 꽉 채워 한입마다 화끈하게 퍼지는 김밥</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/원조김밥.png" alt="참치 김밥">
+              </div>
+              <h2 class="menu-name">참치 김밥</h2>
+              <p class="menu-price">5,000원</p>
+              <p class="menu-desc"># 촉촉한 참치의 부드러운 고소함이 입안에 퍼지는 김밥</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/당근김밥.png" alt="치즈 김밥">
+              </div>
+              <h2 class="menu-name">치즈 김밥</h2>
+              <p class="menu-price">5,000원</p>
+              <p class="menu-desc"># 부드럽게 녹아드는 치즈가 한입 가득 고소함을 더한 김밥</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="menu-panel" data-panel="rice">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/김치볶음밥.PNG" alt="김치 볶음밥">
+              </div>
+              <h2 class="menu-name">김치 볶음밥</h2>
+              <p class="menu-price">9,000원</p>
+              <p class="menu-desc"># 한입 먹으면 멈출 수 없는 국민 볶음밥</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/계란새우.png" alt="계란 새우 볶음밥">
+              </div>
+              <h2 class="menu-name">계란 새우 볶음밥</h2>
+              <p class="menu-price">9,000원</p>
+              <p class="menu-desc"># 담백하고 고소한 새우와 계란의 조화</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/불고기덮밥.jpg" alt="불고기 덮밥">
+              </div>
+              <h2 class="menu-name">불고기 덮밥</h2>
+              <p class="menu-price">10,000원</p>
+              <p class="menu-desc"># 불향 가득으로 자꾸 생각나는 맛</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb empty-thumb" aria-label="제육볶음 준비 중"></div>
+              <h2 class="menu-name">제육볶음</h2>
+              <p class="menu-price">22,000원</p>
+              <p class="menu-desc">&nbsp;</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/도시락.png" alt="제육 도시락">
+              </div>
+              <h2 class="menu-name">제육 도시락</h2>
+              <p class="menu-price">9,000원</p>
+              <p class="menu-desc"># 국 포함 가성비 도시락!!</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- [3] 면류 탭 패널 -->
+        <section class="menu-panel" data-panel="noodle">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/쫄면.jpg" alt="쫄면"> 
+              </div>
+              <h2 class="menu-name">쫄면</h2>
+              <p class="menu-price">7,000원</p>
+              <p class="menu-desc"># 신선한 야채가 듬뿍, 새콤달콤 매콤한 소스의 쫄면</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/마시꼬라면.png" alt="마시꼬 라면">
+              </div>
+              <h2 class="menu-name">마시꼬 라면</h2>
+              <p class="menu-price">4,500원</p>
+              <p class="menu-desc"># 양은냄비에 꼬들하게 끓여낸 분식집 정석 라면</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/잔치국수.png" alt="잔치국수">
+              </div>
+              <h2 class="menu-name">잔치국수</h2>
+              <p class="menu-price">7,000원</p>
+              <p class="menu-desc"># 깊고 진한 멸치육수의 맛</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- [4] 분식 탭 패널 -->
+        <section class="menu-panel" data-panel="snack">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/떡볶이.png" alt="떡볶이">
+              </div>
+              <h2 class="menu-name">떡볶이</h2>
+              <p class="menu-price">7,000원</p>
+              <p class="menu-desc"># 매콤달콤한 소스에 쫄깃한 떡과 어묵의 환상 조합</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/순대.png" alt="찰순대">
+              </div>
+              <h2 class="menu-name">찰순대</h2>
+              <p class="menu-price">5,000원</p>
+              <p class="menu-desc"># 쫀득쫀득한 식감이 살아있는 담백하고 고소한 명품 순대</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/김말이.png" alt="김말이튀김">
+              </div>
+              <h2 class="menu-name">김말이튀김</h2>
+              <p class="menu-price">4,000원</p>
+              <p class="menu-desc"># 겉은 바삭 속은 당면으로 꽉 찬 떡볶이 국물 필수 튀김</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- [5] 음료 탭 패널 -->
+        <section class="menu-panel" data-panel="drink">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/콜라.png" alt="콜라">
+              </div>
+              <h2 class="menu-name">콜라</h2>
+              <p class="menu-price">2,000원</p>
+              <p class="menu-desc"># 톡 쏘는 시원한 탄산음료</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/사이다.png" alt="사이다">
+              </div>
+              <h2 class="menu-name">사이다</h2>
+              <p class="menu-price">2,000원</p>
+              <p class="menu-desc"># 맑고 청량한 탄산음료</p>
+            </article>
+
+            <article class="menu-card">
+              <div class="menu-thumb">
+                <img src="images/오란씨.png" alt="오란씨">
+              </div>
+              <h2 class="menu-name">오란씨</h2>
+              <p class="menu-price">2,000원</p>
+              <p class="menu-desc"># 상큼 달콤한 과일향 탄산음료</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="menu-panel" data-panel="coffee">
+          <div class="menu-grid">
+            <article class="menu-card">
+              <h2 class="menu-name">아메리카노</h2>
+              <p class="menu-price">2,000원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">복숭아 아이스티</h2>
+              <p class="menu-price">2,500원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">캐모마일차</h2>
+              <p class="menu-price">4,500원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">유자차</h2>
+              <p class="menu-price">4,500원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">요거트스무디</h2>
+              <p class="menu-price">4,500원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">블루베리스무디</h2>
+              <p class="menu-price">5,000원</p>
+            </article>
+
+            <article class="menu-card">
+              <h2 class="menu-name">딸기 스무디</h2>
+              <p class="menu-price">5,000원</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".menu-tabs a");
+    const panels = document.querySelectorAll(".menu-panel");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const target = tab.dataset.tab;
+
+        tabs.forEach((item) => item.classList.remove("active"));
+        panels.forEach((panel) => panel.classList.remove("active"));
+
+        tab.classList.add("active");
+        document
+          .querySelector(`.menu-panel[data-panel="${target}"]`)
+          .classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>

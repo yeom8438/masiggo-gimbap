@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마시꼬 김밥 - 오시는 길</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #efefef;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 0 0 80px;
+      background-color: white;
+    }
+
+    .inner {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px 56px;
+    }
+
+    .header-wrap {
+      text-align: center;
+      padding: 25px 0 0;
+      background-color: white;
+    }
+
+    .logo-center {
+      display: inline-block;
+    }
+
+    .logo-center img {
+      width: 270px;
+      margin-bottom: 18px;
+    }
+
+    .nav-center {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 44px;
+    }
+
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .nav-center a {
+      position: relative;
+      text-decoration: none;
+      color: #222;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0%;
+      height: 3px;
+      background-color: #e65100;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #e65100;
+    }
+
+    .nav-center a:hover::after,
+    .nav-center a.active::after {
+      width: 100%;
+    }
+
+    .page-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 30px;
+    }
+
+    /* 오시는 길 전용 스타일 */
+    .map-wrap {
+      width: 100%;
+      height: 450px;
+      background-color: #e2e2e2;
+      border: 1px solid #ccc;
+      margin-bottom: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #777;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      border-top: 2px solid #222;
+      padding-top: 40px;
+    }
+
+    .info-item h3 {
+      font-size: 20px;
+      color: #e65100;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-item p {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .info-item .highlight {
+      font-weight: 700;
+      color: #222;
+    }
+
+    @media (max-width: 1024px) {
+      .inner {
+        width: calc(100% - 48px);
+        padding: 0 20px 48px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-center ul {
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .map-wrap {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header-wrap">
+      <a href="마시꼬김밥.html" class="logo-center">
+        <img src="images/마시꼬김밥로고.png" alt="마시꼬 김밥 로고">
+      </a>
+
+      <nav class="nav-center">
+        <div class="inner">
+          <ul>
+            <li><a href="마시꼬김밥.html">홈</a></li>
+            <li><a href="menu.html">메뉴</a></li>
+            <li><a href="about.html">가게 소개</a></li>
+            <li><a href="location.html" class="active">오시는 길</a></li>
+            <li><a href="event.html">이벤트</a></li>
+            <li><a href="review.html">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="inner">
+      <main>
+        <h1 class="page-title">오시는 길</h1>
+
+        <!-- 지도 영역 (IP 주소 에러 방지용 안전 임베드 적용) -->
+        <div class="map-wrap" style="padding: 0; background: none; overflow: hidden; position: relative;">
+          <iframe 
+            src="https://maps.google.com/maps?q=%EA%B5%B0%EC%82%B0%EC%8B%9C%20%EB%B2%88%EC%98%81%EB%A1%9E%20110&t=&z=17&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0; min-height:450px;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+          
+          <!-- 클릭 시 네이버 지도 앱/웹으로 다이렉트 연결되는 버튼 -->
+          <div style="position: absolute; bottom: 15px; right: 15px; z-index: 10;">
+            <a href="https://naver.me/56XX5ntX" target="_blank" style="display: inline-block; padding: 12px 20px; background-color: #03C75A; color: white; text-decoration: none; border-radius: 6px; font-size: 14px; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: 0.2s;">
+              네이버 지도로 길찾기 ➔
+            </a>
+          </div>
+        </div>
+
+        <!-- 매장 상세 정보 -->
+        <div class="info-grid">
+          <div class="info-item">
+            <h3>📍 매장 주소</h3>
+            <p>
+              <span class="highlight">도로명</span> : 전북특별자치도 군산시 번영로 110,동서공업사 옆 건물<br>
+              <span class="highlight">지번</span> : 전북특별자치도 군산시 미장동 52
+            </p>
+          </div>
+
+          <div class="info-item">
+            <h3>⏰ 영업 시간</h3>
+            <p>
+              <span class="highlight">매일</span> 09:00 ~ 20:00<br>
+              (라스트 오더 19:30)<br>
+              <span style="color: #d32f2f; font-weight: 700;">※ 매주 일요일 정기 휴무</span>
+            </p>
+          </div>
+
+          <div class="info-item">
+            <h3>📞 연락처</h3>
+            <p>
+              064-445-6300<br>
+              (단체 주문 및 포장 예약 환영)
+            </p>
+          </div>
+
+          <div class="info-item">
+            <h3>🚗 주차 안내</h3>
+            <p>
+              군산 스크린골프장 주차장 사용<br>
+              (포장 주문 시 미리 연락 주시면 바로 픽업 가능하도록 준비해 드립니다.)
+            </p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>

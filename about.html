@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마시꼬 김밥 가게 소개</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #efefef;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .inner {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .header-wrap {
+      text-align: center;
+      padding: 25px 0 0;
+      background-color: white;
+    }
+
+    .logo-center {
+      display: inline-block;
+    }
+
+    .logo-center img {
+      width: 270px;
+      margin-bottom: 18px;
+    }
+
+    .nav-center {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 44px;
+    }
+
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .nav-center a {
+      position: relative;
+      text-decoration: none;
+      color: #222;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0%;
+      height: 3px;
+      background-color: #e65100;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #e65100;
+    }
+
+    .nav-center a:hover::after,
+    .nav-center a.active::after {
+      width: 100%;
+    }
+
+    .about-page {
+      padding-bottom: 72px;
+    }
+
+    .about-title {
+      font-size: 40px;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    .about-story {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 34px;
+      align-items: start;
+      margin-bottom: 82px;
+    }
+
+    .story-text {
+      padding-top: 8px;
+      text-align: center;
+    }
+
+    .quote-image {
+      width: 100%;
+      max-width: 360px;
+      display: block;
+      margin: 0 auto 22px;
+    }
+
+    .story-copy {
+      font-size: 17px;
+      line-height: 1.72;
+      text-align: center;
+      word-break: keep-all;
+      color: #333;
+    }
+
+    .story-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-top: 8px;
+    }
+
+    .story-photo {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+      background-color: #f6f6f6;
+    }
+
+    .story-photo.large {
+      max-width: 490px;
+      margin-left: auto;
+    }
+
+    .story-photo.medium {
+      max-width: 540px;
+      margin-left: 18px;
+    }
+
+    .story-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .ambience {
+      margin-top: 10px;
+    }
+
+    .ambience-title {
+      font-size: 34px;
+      text-align: center;
+      letter-spacing: -1px;
+      margin-bottom: 36px;
+    }
+
+    .ambience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .ambience-card {
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.1);
+      background-color: #f9f9f9;
+    }
+
+    .ambience-card img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .site-footer {
+      background-color: #2f2f2f;
+      color: #bcbcbc;
+      margin-top: 100px;
+    }
+
+    .footer-top {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      list-style: none;
+      padding: 28px 0;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #8f8f8f;
+      font-size: 17px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover,
+    .footer-links a.point {
+      color: #f1f1f1;
+    }
+
+    .footer-bottom {
+      padding: 34px 0 42px;
+    }
+
+    .footer-info {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #9f9f9f;
+      word-break: keep-all;
+    }
+
+    .footer-copy {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media (max-width: 1280px) {
+      .inner {
+        width: calc(100% - 48px);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .about-story,
+      .ambience-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .story-photo.large,
+      .story-photo.medium {
+        max-width: 100%;
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-center ul {
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .about-title {
+        font-size: 34px;
+      }
+
+      .story-copy {
+        font-size: 16px;
+      }
+
+      .ambience-title {
+        font-size: 30px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .inner {
+        width: calc(100% - 28px);
+        padding: 0;
+      }
+
+      .footer-links {
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header-wrap">
+      <a href="마시꼬김밥.html" class="logo-center">
+        <img src="images/마시꼬김밥로고.png" alt="마시꼬 김밥 로고">
+      </a>
+
+      <nav class="nav-center">
+        <div class="inner">
+          <ul>
+            <li><a href="마시꼬김밥.html">홈</a></li>
+            <li><a href="menu.html">메뉴</a></li>
+            <li><a href="about.html" class="active">가게 소개</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트</a></li>
+            <li><a href="review.html">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="about-page">
+      <div class="inner">
+        <section class="about-story">
+          <div class="story-text">
+            <h1 class="about-title">가게 소개</h1>
+            <img src="images/about-quote.png" alt="좋은 재료를 아끼지 않는 정직한 맛, 편안한 공간에서 대접합니다." class="quote-image">
+            <p class="story-copy">
+              매일 아침, 가장 신선한 재료를 고집하는<br>
+              정직함으로 시작합니다.<br>
+              내 가족이 먹는다는 마음으로 엄선한 좋은<br>
+              재료들만 골라,<br>
+              부족함 없이 듬뿍 담아 한 줄 한 줄 정성껏<br>
+              말아냅니다.<br>
+              넓고 깨끗한 인테리어 속에서 여유롭게<br>
+              식사하실 수 있도록 준비했습니다.<br>
+              입안 가득 차오르는 풍성한 맛은 저희가<br>
+              고객님께 드리는 약속이자 진심입니다.
+            </p>
+          </div>
+
+          <div class="story-visual">
+            <div class="story-photo large">
+              <img src="images/rolling-1.png" alt="김밥을 만드는 모습">
+            </div>
+            <div class="story-photo medium">
+              <img src="images/rolling-2.png" alt="재료를 올리며 김밥을 만드는 모습">
+            </div>
+          </div>
+        </section>
+
+        <section class="ambience">
+          <h2 class="ambience-title">가게 내부 & 분위기</h2>
+          <div class="ambience-grid">
+            <div class="ambience-card">
+              <img src="images/interior-1.png" alt="가게 내부 전경">
+            </div>
+            <div class="ambience-card">
+              <img src="images/interior-2.png" alt="가게 내부 좌석 전경">
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="inner">
+          <ul class="footer-links">
+            <li><a href="#">이용약관</a></li>
+            <li><a href="#" class="point">개인정보처리방침</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트 안내</a></li>
+            <li><a href="review.html">리뷰 보기</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="inner">
+          <p class="footer-info">
+            전북특별자치도 군산시 번영로 110, 3동 1층 | 대표이사 : 박미자 | 전화 : 064-445-6300 | 사업자등록번호 : 506-48-01251
+          </p>
+          <p class="footer-info">
+            신선한 재료와 정성 가득한 한 끼를 전하는 마시꼬김밥입니다. 김밥, 밥류, 면류, 분식 메뉴를 편안하게 즐기실 수 있습니다.
+          </p>
+          <p class="footer-copy">Copyright © Masiggo Gimbap. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

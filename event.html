@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마시꼬 김밥 - 이벤트</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #efefef;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .inner {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .header-wrap {
+      text-align: center;
+      padding: 25px 0 0;
+      background-color: white;
+    }
+
+    .logo-center {
+      display: inline-block;
+    }
+
+    .logo-center img {
+      width: 270px;
+      margin-bottom: 18px;
+    }
+
+    .nav-center {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 44px;
+    }
+
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .nav-center a {
+      position: relative;
+      text-decoration: none;
+      color: #222;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0%;
+      height: 3px;
+      background-color: #e65100;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #e65100;
+    }
+
+    .nav-center a:hover::after,
+    .nav-center a.active::after {
+      width: 100%;
+    }
+
+    .event-page {
+      padding-bottom: 72px;
+    }
+
+    .event-hero {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 36px;
+      align-items: center;
+      padding: 42px 0 52px;
+      border-bottom: 2px solid #222;
+    }
+
+    .event-title {
+      font-size: 42px;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .event-intro {
+      max-width: 650px;
+      color: #555;
+      font-size: 18px;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .event-summary {
+      padding: 28px;
+      border: 2px solid #f2b35b;
+      border-radius: 8px;
+      background-color: #fff8ee;
+    }
+
+    .summary-label {
+      color: #e65100;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .summary-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .summary-text {
+      color: #555;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .section-title {
+      font-size: 30px;
+      margin: 58px 0 24px;
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .event-card {
+      border: 1px solid #e8e1da;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+
+    .event-card-top {
+      min-height: 118px;
+      padding: 24px;
+      background-color: #fff3df;
+      border-bottom: 1px solid #eedbc1;
+    }
+
+    .event-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background-color: #e65100;
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .event-card h3 {
+      font-size: 24px;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .event-card-body {
+      padding: 24px;
+    }
+
+    .event-info {
+      list-style: none;
+      display: grid;
+      gap: 13px;
+      margin-bottom: 22px;
+    }
+
+    .event-info li {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 10px;
+      color: #444;
+      font-size: 16px;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .event-info strong {
+      color: #222;
+    }
+
+    .event-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 6px;
+      background-color: #222;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 800;
+      transition: 0.25s;
+    }
+
+    .event-button:hover {
+      background-color: #e65100;
+    }
+
+    .notice-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 30px;
+      border-radius: 8px;
+      background-color: #f7f7f7;
+      border: 1px solid #e5e5e5;
+    }
+
+    .notice-box h3 {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .notice-list {
+      color: #555;
+      line-height: 1.8;
+      padding-left: 18px;
+      word-break: keep-all;
+    }
+
+    .event-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 56px;
+      padding: 32px;
+      border-radius: 8px;
+      background-color: #2f2f2f;
+      color: white;
+    }
+
+    .event-cta h2 {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .event-cta p {
+      color: #d8d8d8;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 6px;
+      background-color: white;
+      color: #222;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .cta-button.point {
+      background-color: #e65100;
+      color: white;
+    }
+
+    .site-footer {
+      background-color: #2f2f2f;
+      color: #bcbcbc;
+      margin-top: 100px;
+    }
+
+    .footer-top {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      list-style: none;
+      padding: 28px 0;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #8f8f8f;
+      font-size: 17px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover,
+    .footer-links a.point {
+      color: #f1f1f1;
+    }
+
+    .footer-bottom {
+      padding: 34px 0 42px;
+    }
+
+    .footer-info {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #9f9f9f;
+      word-break: keep-all;
+    }
+
+    .footer-copy {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media (max-width: 1280px) {
+      .inner {
+        width: calc(100% - 48px);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .event-hero,
+      .notice-box,
+      .event-cta {
+        grid-template-columns: 1fr;
+      }
+
+      .event-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event-cta {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-center ul {
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .event-title {
+        font-size: 34px;
+      }
+
+      .event-hero {
+        padding-top: 16px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .inner {
+        width: calc(100% - 28px);
+        padding: 0;
+      }
+
+      .event-summary,
+      .notice-box,
+      .event-cta {
+        padding: 22px;
+      }
+
+      .event-info li {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .footer-links {
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header-wrap">
+      <a href="마시꼬김밥.html" class="logo-center">
+        <img src="images/마시꼬김밥로고.png" alt="마시꼬 김밥 로고">
+      </a>
+
+      <nav class="nav-center">
+        <div class="inner">
+          <ul>
+            <li><a href="마시꼬김밥.html">홈</a></li>
+            <li><a href="menu.html">메뉴</a></li>
+            <li><a href="about.html">가게 소개</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html" class="active">이벤트</a></li>
+            <li><a href="review.html">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="event-page">
+      <div class="inner">
+        <section class="event-hero">
+          <div>
+            <h1 class="event-title">이벤트</h1>
+            <p class="event-intro">
+              마시꼬 김밥을 더 맛있게 즐길 수 있는 혜택을 모았습니다.
+              방문 전 진행 기간과 적용 조건을 확인해주세요.
+            </p>
+          </div>
+
+          <div class="event-summary">
+            <p class="summary-label">진행 중</p>
+            <p class="summary-title">매장 방문 혜택</p>
+            <p class="summary-text">리뷰, 점심 세트, 단체 주문 이벤트를 매장에서 바로 확인하실 수 있습니다.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-title">진행 중 이벤트</h2>
+          <div class="event-grid">
+            <article class="event-card">
+              <div class="event-card-top">
+                <span class="event-badge">01</span>
+                <h3>리뷰 작성 음료 증정</h3>
+              </div>
+              <div class="event-card-body">
+                <ul class="event-info">
+                  <li><strong>기간</strong><span>상시 진행</span></li>
+                  <li><strong>혜택</strong><span>네이버 또는 카카오 리뷰 작성 시 음료 1캔 증정</span></li>
+                  <li><strong>방법</strong><span>직원에게 작성한 리뷰 화면을 보여주세요.</span></li>
+                </ul>
+                <a href="review.html" class="event-button">리뷰 보러가기</a>
+              </div>
+            </article>
+
+            <article class="event-card">
+              <div class="event-card-top">
+                <span class="event-badge">02</span>
+                <h3>점심 세트 할인</h3>
+              </div>
+              <div class="event-card-body">
+                <ul class="event-info">
+                  <li><strong>기간</strong><span>평일 11:00 ~ 14:00</span></li>
+                  <li><strong>혜택</strong><span>김밥과 라면을 함께 주문하면 세트 할인 적용</span></li>
+                  <li><strong>방법</strong><span>매장 주문 시 점심 세트로 말씀해주세요.</span></li>
+                </ul>
+                <a href="menu.html" class="event-button">메뉴 보러가기</a>
+              </div>
+            </article>
+
+            <article class="event-card">
+              <div class="event-card-top">
+                <span class="event-badge">03</span>
+                <h3>단체 주문 예약 혜택</h3>
+              </div>
+              <div class="event-card-body">
+                <ul class="event-info">
+                  <li><strong>기간</strong><span>상시 진행</span></li>
+                  <li><strong>혜택</strong><span>도시락 10개 이상 사전 예약 시 주문 혜택 제공</span></li>
+                  <li><strong>방법</strong><span>방문 하루 전 전화로 수량과 시간을 알려주세요.</span></li>
+                </ul>
+                <a href="location.html" class="event-button">매장 정보 보기</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="section-title">참여 안내</h2>
+          <div class="notice-box">
+            <div>
+              <h3>확인해주세요</h3>
+              <ul class="notice-list">
+                <li>이벤트 내용은 매장 상황에 따라 조기 종료될 수 있습니다.</li>
+                <li>중복 할인 적용 여부는 주문 전 직원에게 문의해주세요.</li>
+                <li>단체 주문은 재료 준비를 위해 사전 예약을 권장합니다.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>지난 이벤트</h3>
+              <ul class="notice-list">
+                <li>종료된 이벤트는 이 영역에서 확인할 수 있습니다.</li>
+                <li>새로운 혜택이 생기면 진행 중 이벤트에 먼저 안내됩니다.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="event-cta">
+          <div>
+            <h2>방문 전 궁금한 점이 있으신가요?</h2>
+            <p>이벤트 적용 가능 여부와 단체 주문은 매장으로 문의해주시면 빠르게 안내해드립니다.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="tel:064-445-6300" class="cta-button point">전화 문의하기</a>
+            <a href="location.html" class="cta-button">오시는 길 보기</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="inner">
+          <ul class="footer-links">
+            <li><a href="#">이용약관</a></li>
+            <li><a href="#" class="point">개인정보처리방침</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트 안내</a></li>
+            <li><a href="review.html">리뷰 보기</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="inner">
+          <p class="footer-info">
+            전북특별자치도 군산시 번영로 110, 3동 1층 | 대표이사 : 박미자 | 전화 : 064-445-6300 | 사업자등록번호 : 506-48-01251
+          </p>
+          <p class="footer-info">
+            신선한 재료와 정성 가득한 한 끼를 전하는 마시꼬김밥입니다. 김밥, 밥류, 면류, 분식 메뉴를 편안하게 즐기실 수 있습니다.
+          </p>
+          <p class="footer-copy">Copyright © Masiggo Gimbap. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

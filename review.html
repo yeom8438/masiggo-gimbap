@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마시꼬 김밥 리뷰</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #efefef;
+      color: #222;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .inner {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .header-wrap {
+      text-align: center;
+      padding: 25px 0 0;
+      background-color: white;
+    }
+
+    .logo-center {
+      display: inline-block;
+    }
+
+    .logo-center img {
+      width: 270px;
+      margin-bottom: 18px;
+    }
+
+    .nav-center {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 44px;
+    }
+
+    .nav-center ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 65px;
+    }
+
+    .nav-center a {
+      position: relative;
+      text-decoration: none;
+      color: #222;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -7px;
+      width: 0%;
+      height: 3px;
+      background-color: #e65100;
+      transition: 0.3s;
+    }
+
+    .nav-center a:hover,
+    .nav-center a.active {
+      color: #e65100;
+    }
+
+    .nav-center a:hover::after,
+    .nav-center a.active::after {
+      width: 100%;
+    }
+
+    .review-page {
+      padding-bottom: 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 36px;
+    }
+
+    .hero-copy {
+      padding: 42px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #fff5ea 0%, #fff 52%, #fff1e4 100%);
+      border: 1px solid #f4dfcf;
+    }
+
+    .hero-copy h1 {
+      font-size: 42px;
+      line-height: 1.2;
+      letter-spacing: -1.2px;
+      margin-bottom: 14px;
+    }
+
+    .hero-copy p {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #5a5a5a;
+      word-break: keep-all;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .hero-badges span {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background-color: #fff;
+      border: 1px solid #f1d9c8;
+      color: #cf5a11;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero-summary {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 34px 30px;
+      border-radius: 28px;
+      background-color: #2f2f2f;
+      color: white;
+    }
+
+    .summary-label {
+      font-size: 14px;
+      color: #d0d0d0;
+      margin-bottom: 8px;
+    }
+
+    .summary-score {
+      font-size: 56px;
+      font-weight: 800;
+      color: #ffb24c;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .summary-stars {
+      color: #ffb24c;
+      font-size: 24px;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+
+    .summary-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #d9d9d9;
+    }
+
+    .review-layout {
+      display: grid;
+      grid-template-columns: 380px minmax(0, 1fr);
+      gap: 30px;
+      align-items: start;
+    }
+
+    .review-form-card,
+    .review-list-card {
+      border-radius: 24px;
+      background-color: white;
+      border: 1px solid #ececec;
+      box-shadow: 0 14px 38px rgba(0,0,0,0.07);
+    }
+
+    .review-form-card {
+      padding: 28px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .card-title {
+      font-size: 26px;
+      letter-spacing: -0.6px;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 22px;
+    }
+
+    .review-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: #e65100;
+      box-shadow: 0 0 0 4px rgba(230, 81, 0, 0.12);
+    }
+
+    .form-textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .file-note {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #7a7a7a;
+      line-height: 1.5;
+    }
+
+    .photo-preview {
+      display: none;
+      margin-top: 12px;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid #ececec;
+      background-color: #fafafa;
+    }
+
+    .photo-preview.show {
+      display: block;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .rating-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rating-row input {
+      display: none;
+    }
+
+    .rating-row label {
+      margin: 0;
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 14px;
+      font-weight: 700;
+      color: #555;
+    }
+
+    .rating-row input:checked + label {
+      border-color: #e65100;
+      background-color: #fff2ea;
+      color: #cf5a11;
+    }
+
+    .submit-btn {
+      border: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      background-color: #e65100;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #bf3f00;
+      transform: translateY(-1px);
+    }
+
+    .review-list-card {
+      padding: 28px;
+    }
+
+    .list-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .review-count {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .review-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .sort-label {
+      font-size: 14px;
+      color: #777;
+      font-weight: 700;
+    }
+
+    .sort-select {
+      min-width: 150px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 14px;
+      background-color: white;
+      color: #333;
+      outline: none;
+    }
+
+    .review-feed {
+      display: grid;
+      gap: 18px;
+    }
+
+    .review-item {
+      padding: 22px;
+      border-radius: 20px;
+      background-color: #fafafa;
+      border: 1px solid #efefef;
+    }
+
+    .review-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .review-user {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .review-meta {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .review-stars {
+      color: #e65100;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .review-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #444;
+      word-break: keep-all;
+    }
+
+    .review-photo {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-top: 16px;
+      display: block;
+    }
+
+    .empty-message {
+      padding: 38px 22px;
+      border-radius: 20px;
+      background-color: #fff8f1;
+      color: #7a5c45;
+      text-align: center;
+      line-height: 1.7;
+      border: 1px dashed #efc6a3;
+    }
+
+    .site-footer {
+      background-color: #2f2f2f;
+      color: #bcbcbc;
+      margin-top: 90px;
+    }
+
+    .footer-top {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      list-style: none;
+      padding: 28px 0;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #8f8f8f;
+      font-size: 17px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover,
+    .footer-links a.point {
+      color: #f1f1f1;
+    }
+
+    .footer-bottom {
+      padding: 34px 0 42px;
+    }
+
+    .footer-info {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #9f9f9f;
+      word-break: keep-all;
+    }
+
+    .footer-copy {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media (max-width: 1280px) {
+      .inner {
+        width: calc(100% - 48px);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .review-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .review-form-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-center ul {
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .hero-copy,
+      .hero-summary,
+      .review-form-card,
+      .review-list-card {
+        padding: 22px;
+      }
+
+      .hero-copy h1 {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .inner {
+        width: calc(100% - 28px);
+        padding: 0;
+      }
+
+      .list-top,
+      .review-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .review-tools {
+        width: 100%;
+      }
+
+      .sort-select {
+        width: 100%;
+      }
+
+      .footer-links {
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="header-wrap">
+      <a href="마시꼬김밥.html" class="logo-center">
+        <img src="images/마시꼬김밥로고.png" alt="마시꼬 김밥 로고">
+      </a>
+
+      <nav class="nav-center">
+        <div class="inner">
+          <ul>
+            <li><a href="마시꼬김밥.html">홈</a></li>
+            <li><a href="menu.html">메뉴</a></li>
+            <li><a href="about.html">가게 소개</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트</a></li>
+            <li><a href="review.html" class="active">리뷰</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="review-page">
+      <div class="inner">
+        <section class="hero">
+          <div class="hero-copy">
+            <h1>직접 남기는 마시꼬 김밥 후기</h1>
+            <p>맛있게 드신 메뉴, 친절했던 순간, 다시 찾고 싶은 이유를 자유롭게 남겨주세요. 고객님의 리뷰는 다른 손님에게 큰 도움이 되고 매장에도 소중한 응원이 됩니다.</p>
+            <div class="hero-badges">
+              <span>실시간 후기 작성</span>
+              <span>메뉴별 리뷰 남기기</span>
+              <span>방문 만족도 공유</span>
+            </div>
+          </div>
+
+          <div class="hero-summary">
+            <p class="summary-label">고객 만족도</p>
+            <p class="summary-score">4.9</p>
+            <p class="summary-stars">★★★★★</p>
+            <p class="summary-text">신선한 재료, 깔끔한 매장 분위기, 친절한 응대 덕분에 꾸준히 좋은 평가를 받고 있어요.</p>
+          </div>
+        </section>
+
+        <section class="review-layout">
+          <aside class="review-form-card">
+            <h2 class="card-title">후기 작성하기</h2>
+            <p class="card-desc">간단한 정보와 함께 후기를 남겨주시면 아래 리뷰 목록에 바로 반영됩니다.</p>
+
+            <form class="review-form" id="reviewForm">
+              <div class="form-group">
+                <label for="reviewerName">닉네임</label>
+                <input class="form-input" id="reviewerName" name="reviewerName" type="text" placeholder="예: 김밥러버" required>
+              </div>
+
+              <div class="form-group">
+                <label for="reviewMenu">주문 메뉴</label>
+                <select class="form-select" id="reviewMenu" name="reviewMenu" required>
+                  <option value="">메뉴를 선택해주세요</option>
+                  <option>원조 김밥</option>
+                  <option>당근 김밥</option>
+                  <option>매운 어묵 김밥</option>
+                  <option>김치 볶음밥</option>
+                  <option>계란 새우 볶음밥</option>
+                  <option>불고기 덮밥</option>
+                  <option>제육 도시락</option>
+                  <option>기타</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>별점</label>
+                <div class="rating-row">
+                  <input id="rate5" name="rating" type="radio" value="5" checked>
+                  <label for="rate5">★★★★★</label>
+                  <input id="rate4" name="rating" type="radio" value="4">
+                  <label for="rate4">★★★★</label>
+                  <input id="rate3" name="rating" type="radio" value="3">
+                  <label for="rate3">★★★</label>
+                  <input id="rate2" name="rating" type="radio" value="2">
+                  <label for="rate2">★★</label>
+                  <input id="rate1" name="rating" type="radio" value="1">
+                  <label for="rate1">★</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="reviewText">리뷰 내용</label>
+                <textarea class="form-textarea" id="reviewText" name="reviewText" placeholder="맛, 양, 친절도, 재방문 의사 등을 자유롭게 적어주세요." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="reviewPhoto">사진 첨부</label>
+                <input class="form-input" id="reviewPhoto" name="reviewPhoto" type="file" accept="image/*">
+                <p class="file-note">사진은 미리보기용입니다. 다른 사용자에게 보이는 공용 리뷰에는 글 내용과 별점이 저장됩니다.</p>
+                <div class="photo-preview" id="photoPreview">
+                  <img id="photoPreviewImage" alt="리뷰 사진 미리보기">
+                </div>
+              </div>
+
+              <button class="submit-btn" type="submit">후기 등록하기</button>
+            </form>
+          </aside>
+
+          <section class="review-list-card">
+            <div class="list-top">
+              <div>
+                <h2 class="card-title">고객 후기</h2>
+                <p class="card-desc">직접 남겨주신 리뷰를 최신순으로 확인할 수 있어요.</p>
+              </div>
+              <div class="review-tools">
+                <p class="review-count" id="reviewCount">총 0개의 리뷰</p>
+                <label class="sort-label" for="reviewSort">정렬</label>
+                <select class="sort-select" id="reviewSort">
+                  <option value="latest">최신순</option>
+                  <option value="rating-desc">별점 높은순</option>
+                  <option value="rating-asc">별점 낮은순</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="review-feed" id="reviewFeed"></div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="inner">
+          <ul class="footer-links">
+            <li><a href="#">이용약관</a></li>
+            <li><a href="#" class="point">개인정보처리방침</a></li>
+            <li><a href="location.html">오시는 길</a></li>
+            <li><a href="event.html">이벤트 안내</a></li>
+            <li><a href="review.html">리뷰 보기</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="inner">
+          <p class="footer-info">
+            전북특별자치도 군산시 번영로 110, 3동 1층 | 대표이사 : 박미자 | 전화 : 064-445-6300 | 사업자등록번호 : 506-48-01251
+          </p>
+          <p class="footer-info">
+            신선한 재료와 정성 가득한 한 끼를 전하는 마시꼬김밥입니다. 김밥, 밥류, 면류, 분식 메뉴를 편안하게 즐기실 수 있습니다.
+          </p>
+          <p class="footer-copy">Copyright © Masiggo Gimbap. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://oioualekmlqetqfgnqli.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_AfPiZUIxaFhHeJvVJgZVkA_hEchvx90";
+    const supabaseClient = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      : null;
+
+    const reviewFeed = document.getElementById("reviewFeed");
+    const reviewCount = document.getElementById("reviewCount");
+    const reviewForm = document.getElementById("reviewForm");
+    const reviewPhotoInput = document.getElementById("reviewPhoto");
+    const photoPreview = document.getElementById("photoPreview");
+    const photoPreviewImage = document.getElementById("photoPreviewImage");
+    const reviewSort = document.getElementById("reviewSort");
+
+    const defaultReviews = [
+      {
+        name: "fj○○",
+        menu: "원조 김밥",
+        rating: 5,
+        text: "김밥 자주 사먹는데 최근에 먹었던 것 중에 제일 맛있고 단체모임하기 좋아요!",
+        date: "2026.05.08",
+        photo: "images/review1.jpg"
+      },
+      {
+        name: "he○○",
+        menu: "쫄면",
+        rating: 5,
+        text: "쫄면이 새콤달콤하니 너무 맛있어요 채소도 많이 넣어주셔서 좋아요! 사장님도 너무 친절하세요.",
+        date: "2026.05.07",
+        photo: "images/review3.jpg"
+      },
+      {
+        name: "제아○○",
+        menu: "원조 김밥",
+        rating: 5,
+        text: "마트 갔다가 김밥 먹으려고 왔는데 인테리어도 넘 깔끔하고 맛있어요!",
+        date: "2026.05.06",
+        photo: "images/review2.jpg"
+      }
+    ];
+
+    let reviews = [...defaultReviews];
+
+    function starText(rating) {
+      return "★".repeat(rating) + "☆".repeat(5 - rating);
+    }
+
+    function getDateValue(dateText) {
+      return Number(dateText.replace(/\./g, ""));
+    }
+
+    function formatDate(dateValue) {
+      const date = new Date(dateValue);
+
+      if (Number.isNaN(date.getTime())) {
+        return dateValue || "";
+      }
+
+      return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, "0")}.${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function normalizeReview(item) {
+      return {
+        name: item.nickname || item.name || "익명",
+        menu: item.menu || "기타",
+        rating: Number(item.rating) || 5,
+        text: item.content || item.text || "",
+        date: formatDate(item.created_at || item.date),
+        photo: item.photo || ""
+      };
+    }
+
+    function sortReviews(items, sortType) {
+      const cloned = [...items];
+
+      if (sortType === "rating-desc") {
+        return cloned.sort((a, b) => {
+          if (b.rating !== a.rating) return b.rating - a.rating;
+          return getDateValue(b.date) - getDateValue(a.date);
+        });
+      }
+
+      if (sortType === "rating-asc") {
+        return cloned.sort((a, b) => {
+          if (a.rating !== b.rating) return a.rating - b.rating;
+          return getDateValue(b.date) - getDateValue(a.date);
+        });
+      }
+
+      return cloned.sort((a, b) => getDateValue(b.date) - getDateValue(a.date));
+    }
+
+    function renderReviews() {
+      const items = sortReviews(reviews, reviewSort.value);
+      reviewCount.textContent = `총 ${items.length}개의 리뷰`;
+
+      if (!items.length) {
+        reviewFeed.innerHTML = '<div class="empty-message">아직 등록된 리뷰가 없습니다.<br>첫 번째 후기를 남겨주세요.</div>';
+        return;
+      }
+
+      reviewFeed.innerHTML = items
+        .map(
+          (item) => `
+            <article class="review-item">
+              <div class="review-head">
+                <div>
+                  <p class="review-user">${escapeHtml(item.name)}</p>
+                  <p class="review-meta">${escapeHtml(item.menu)} · ${escapeHtml(item.date)}</p>
+                </div>
+                <p class="review-stars">${starText(Number(item.rating))}</p>
+              </div>
+              <p class="review-body">${escapeHtml(item.text)}</p>
+              ${item.photo ? `<img class="review-photo" src="${escapeHtml(item.photo)}" alt="${escapeHtml(item.menu)} 리뷰 사진">` : ""}
+            </article>
+          `
+        )
+        .join("");
+    }
+
+    async function loadReviewsFromSupabase() {
+      if (!supabaseClient) {
+        console.error("Supabase 라이브러리를 불러오지 못했습니다.");
+        reviews = [...defaultReviews];
+        renderReviews();
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("reviews")
+        .select("nickname, menu, rating, content, created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("리뷰를 불러오지 못했습니다.", error);
+        reviews = [...defaultReviews];
+        renderReviews();
+        return;
+      }
+
+      const sharedReviews = Array.isArray(data) ? data.map(normalizeReview) : [];
+      reviews = [...sharedReviews, ...defaultReviews];
+      renderReviews();
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("이미지를 불러오지 못했습니다."));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    reviewPhotoInput.addEventListener("change", async () => {
+      const file = reviewPhotoInput.files && reviewPhotoInput.files[0];
+
+      if (!file) {
+        photoPreview.classList.remove("show");
+        photoPreviewImage.removeAttribute("src");
+        return;
+      }
+
+      const dataUrl = await readFileAsDataUrl(file);
+      photoPreviewImage.src = dataUrl;
+      photoPreview.classList.add("show");
+    });
+
+    reviewForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(reviewForm);
+      const submitButton = reviewForm.querySelector(".submit-btn");
+      const newReview = {
+        nickname: formData.get("reviewerName").toString().trim(),
+        menu: formData.get("reviewMenu").toString(),
+        rating: Number(formData.get("rating")),
+        content: formData.get("reviewText").toString().trim()
+      };
+
+      if (!newReview.nickname || !newReview.menu || !newReview.content) {
+        alert("닉네임, 메뉴, 리뷰 내용을 모두 입력해주세요.");
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = "등록 중...";
+
+      if (!supabaseClient) {
+        submitButton.disabled = false;
+        submitButton.textContent = "후기 등록하기";
+        alert("Supabase 연결을 불러오지 못했습니다. 인터넷 연결 후 다시 시도해주세요.");
+        return;
+      }
+
+      const { error } = await supabaseClient.from("reviews").insert(newReview);
+
+      submitButton.disabled = false;
+      submitButton.textContent = "후기 등록하기";
+
+      if (error) {
+        console.error("리뷰 등록에 실패했습니다.", error);
+        alert("리뷰 등록에 실패했습니다. Supabase 테이블 컬럼과 정책을 확인해주세요.");
+        return;
+      }
+
+      reviewForm.reset();
+      document.getElementById("rate5").checked = true;
+      photoPreview.classList.remove("show");
+      photoPreviewImage.removeAttribute("src");
+      await loadReviewsFromSupabase();
+    });
+
+    reviewSort.addEventListener("change", renderReviews);
+
+    loadReviewsFromSupabase();
+  </script>
+</body>
+</html>
